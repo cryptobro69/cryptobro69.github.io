@@ -1,3 +1,73 @@
-<body style="background:#069a99;margin:20%;">
-<img style="margin:auto;display:block;" src="">
+<body style="background:#069a99;margin:10%;margin-top:25%;">
+    <img id="image" style="margin:auto;display:block;width:100%;" src="https://lodemanuylaura.com/home.png">
+    <div id="content" style="display:none; text-align:center; color:white; font-size:24px;">
+        <p>Este es el contenido HTML que aparece al hacer clic en la izquierda.</p>
+    </div>
 </body>
+
+<script>
+    const images = [
+        "https://lodemanuylaura.com/home.png",
+        "https://lodemanuylaura.com/lilo1.png",
+        "https://lodemanuylaura.com/lilo2.png",
+        "https://lodemanuylaura.com/lilo3.png",
+    ];
+
+    const extraImage = "/Users/manu/Downloads/volver.png"; // Imagen de la derecha
+    const transitionImages = [
+        "https://lodemanuylaura.com/lilo4.png",
+        "https://lodemanuylaura.com/loading.png"
+    ]; // Imágenes intermedias antes del HTML
+
+    let index = 0;
+    const imgElement = document.getElementById("image");
+    const contentDiv = document.getElementById("content");
+
+    imgElement.addEventListener("click", (event) => {
+        if (imgElement.src.includes(extraImage)) {
+            // Si la imagen actual es "volver.png", volver a lilo3
+            imgElement.src = images[3];
+            return;
+        }
+
+        if (index < 3) {
+            // Avanza a la siguiente imagen
+            index++;
+            imgElement.src = images[index];
+        } else {
+            // En lilo3, decidir según la posición del clic
+            const x = event.clientX;
+            const width = imgElement.clientWidth;
+
+            if (x < width / 1.5) {
+                // Clic en la izquierda: mostrar 2 imágenes antes del HTML
+                showTransitionImages();
+            } else {
+                // Clic en la derecha: mostrar imagen extra
+                imgElement.src = extraImage;
+            }
+        }
+    });
+
+    function showTransitionImages() {
+        imgElement.src = transitionImages[0]; // Muestra la primera imagen
+        imgElement.style.width = "80%";
+        imgElement.style.margin = "auto";
+        setTimeout(() => {
+            imgElement.src = transitionImages[1]; // Muestra la segunda imagen
+            imgElement.style.width = "40%";
+            imgElement.style.margin = "auto";
+            setTimeout(() => {
+                imgElement.style.display = "none";
+                contentDiv.style.display = "block"; // Muestra el contenido HTML
+            }, 1000);
+        }, 1000);
+    }
+
+    // Función para volver a lilo3 desde el contenido HTML
+    function resetToLilo3() {
+        contentDiv.style.display = "none";
+        imgElement.style.display = "block";
+        imgElement.src = images[3];
+    }
+</script>
