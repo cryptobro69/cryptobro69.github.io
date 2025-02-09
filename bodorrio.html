@@ -1,73 +1,180 @@
-<body style="background:#069a99;margin:10%;margin-top:25%;">
-    <img id="image" style="margin:auto;display:block;width:100%;" src="https://lodemanuylaura.com/home.png">
-    <div id="content" style="display:none; text-align:center; color:white; font-size:24px;">
-        <p>Este es el contenido HTML que aparece al hacer clic en la izquierda.</p>
+<head>
+    <meta charset="UTF-8">
+    <audio id="background-music" loop>
+        <source src="https://lodemanuylaura.com/song.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let audio = document.getElementById("background-music");
+            audio.play().catch(error => console.log("Autoplay bloqueado:", error));
+        });
+    </script>
+    
+    <style>
+
+        body {
+            background: #069a99;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            padding-right: 5%;
+            padding-left: 5%;
+            text-align: center;
+            color: white;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+        }
+
+        /* Animación de shake */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+
+        /* Animación de fade-out */
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        #image {
+            width: 100%;
+            max-width: 600px;
+            transition: opacity 1.5s;
+        }
+
+        #content {
+            display: none;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        /* Contenedor de iconos */
+        .icon-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            position: fixed;
+            top: 20px;
+        }
+
+        /* Iconos pequeños */
+        .icon img {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .icon img:hover {
+            opacity: 0.7;
+        }
+
+        /* Contenedor de contenido */
+        .content-box {
+            display: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin-top: 140px;
+            overflow-y: auto;
+            max-height: 70vh;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="image" src="https://lodemanuylaura.com/home.png">
+    
+    <!-- Iconos ocultos inicialmente -->
+    <div id="icons" class="icon-container" style="display:none;">
+        <div class="icon"><img src="https://lodemanuylaura.com/icon1.png" onclick="showContent('uno')"></div>
+        <div class="icon"><img src="https://lodemanuylaura.com/icon2.png" onclick="showContent('dos')"></div>
+        <div class="icon"><img src="https://lodemanuylaura.com/icon3.png" onclick="showContent('tres')"></div>
+        <div class="icon"><img src="https://lodemanuylaura.com/icon4.png" onclick="showContent('cuatro')"></div>
     </div>
-</body>
 
-<script>
-    const images = [
-        "https://lodemanuylaura.com/home.png",
-        "https://lodemanuylaura.com/lilo1.png",
-        "https://lodemanuylaura.com/lilo2.png",
-        "https://lodemanuylaura.com/lilo3.png",
-    ];
+    <!-- Contenido dinámico -->
+    <div id="content" class="content-box"></div>
 
-    const extraImage = "https://lodemanuylaura.com/volver.png"; // Imagen de la derecha
-    const transitionImages = [
-        "https://lodemanuylaura.com/lilo4.png",
-        "https://lodemanuylaura.com/loading.png"
-    ]; // Imágenes intermedias antes del HTML
+    <br><br><img src="https://lodemanuylaura.com/music.gif"><br>
 
-    let index = 0;
-    const imgElement = document.getElementById("image");
-    const contentDiv = document.getElementById("content");
+    <script>
+        const images = [
+            "https://lodemanuylaura.com/home.png",
+            "https://lodemanuylaura.com/lilo1.png",
+            "https://lodemanuylaura.com/lilo2.png",
+            "https://lodemanuylaura.com/lilo3.png"
+        ];
 
-    imgElement.addEventListener("click", (event) => {
-        if (imgElement.src.includes(extraImage)) {
-            // Si la imagen actual es "volver.png", volver a lilo3
-            imgElement.src = images[3];
-            return;
-        }
+        const extraImage = "https://lodemanuylaura.com/volver.png"; 
+        const transitionImages = [
+            "https://lodemanuylaura.com/lilo4.png",
+            "https://lodemanuylaura.com/loading.gif"
+        ]; 
 
-        if (index < 3) {
-            // Avanza a la siguiente imagen
-            index++;
-            imgElement.src = images[index];
-        } else {
-            // En lilo3, decidir según la posición del clic
-            const x = event.clientX;
-            const width = imgElement.clientWidth;
+        let index = 0;
+        const imgElement = document.getElementById("image");
+        const contentDiv = document.getElementById("content");
+        const iconContainer = document.getElementById("icons");
 
-            if (x < width / 1.5) {
-                // Clic en la izquierda: mostrar 2 imágenes antes del HTML
-                showTransitionImages();
-            } else {
-                // Clic en la derecha: mostrar imagen extra
-                imgElement.src = extraImage;
+        imgElement.addEventListener("click", (event) => {
+            if (imgElement.src.includes(extraImage)) {
+                imgElement.src = images[3]; // Volver a lilo3
+                return;
             }
-        }
-    });
 
-    function showTransitionImages() {
-        imgElement.src = transitionImages[0]; // Muestra la primera imagen
-        imgElement.style.width = "80%";
-        imgElement.style.margin = "auto";
-        setTimeout(() => {
-            imgElement.src = transitionImages[1]; // Muestra la segunda imagen
-            imgElement.style.width = "40%";
-            imgElement.style.margin = "auto";
+            if (index < 3) {
+                index++;
+                imgElement.src = images[index]; // Avanza a la siguiente imagen
+            } else {
+                // En lilo3, decidir según la posición del clic
+                const x = event.clientX;
+                const width = imgElement.clientWidth;
+
+                if (x < width / 2) {
+                    showTransitionImages(); // Izquierda
+                } else {
+                    imgElement.src = extraImage; // Derecha
+                }
+            }
+        });
+
+        function showTransitionImages() {
+            imgElement.src = transitionImages[0]; 
+            imgElement.style.animation = "shake 1.5s";
+
             setTimeout(() => {
-                imgElement.style.display = "none";
-                contentDiv.style.display = "block"; // Muestra el contenido HTML
-            }, 1000);
-        }, 1000);
-    }
+                imgElement.src = transitionImages[1]; 
+                imgElement.style.animation = "";
 
-    // Función para volver a lilo3 desde el contenido HTML
-    function resetToLilo3() {
-        contentDiv.style.display = "none";
-        imgElement.style.display = "block";
-        imgElement.src = images[3];
-    }
-</script>
+                setTimeout(() => {
+                    imgElement.style.display = "none";
+                    iconContainer.style.display = "flex"; // Muestra los iconos
+                }, 2000);
+            }, 2000);
+        }
+
+        function showContent(option) {
+            // Contenido HTML para cada icono
+            const contentHTML = {
+                "uno": "<h2>Cuándo y dónde</h2><p><img src='https://lodemanuylaura.com/welcome.gif'><br><br><b>Boda y festejos:</b> 10 al 12 de octubre<br><b>Ceremonia:</b> sábado 11 octubre<br><br><b>Lugar:</b> Cortijo Balzain (La Zubia, Granada)<br><a href='https://maps.app.goo.gl/G1GSBHKHi3QXVY7B9' target='_blank'>Abrir en Google Maps</a><br><span style='font-size:15px;'>se tarda unos 25 minutos en coche o taxi (mejor!) desde el centro de Granada</span><br><br><img src='https://lodemanuylaura.com/balzain.png'></p>",
+                "dos": "<h2>Alojamiento</h2><p><img src='https://lodemanuylaura.com/chill.gif'><br><br>El Cortijo Balzain cuenta con alojamiento en casitas rurales y habitaciones en el cortijo principal. Lo hemos reservado <b>TODO</b> para familia y amigos pensando en que disfrutéis de un fin de sumana rural completo. Está localizado frente al parque natural de Sierra Nevada, con vistas espectaculares y caminos por los que hacer rutas.<br><br>El coste es de <b>55€ por persona y 2 noches</b>. Hemos ajustado el precio para que una noche la pagues tú y a la otra te invitemos nosotros: además de dónde dormir, tienes incluida la comida y bebida de la pre y la post-boda y los desayunos.<br><br>Puedes quedarte una sola noche si quieres, pero el precio es el mismo porque no podemos darle tu espacio a otra persona :(<br><br>Aunque hay bastantes plazas, <b>necesitamos que nos confirmes cuanto antes</b> si te vas a quedar haciendo el pago por Bizum.<br>.<br>El reparto de casas lo haremos en grupos de familia y amigos, pero te consultaremos y tendremos en cuenta tus preferencias. Cualquier pregunta, escríbenos!</p>",
+                "tres": "<h2>Programa de fiestas</h2><p style='font-size:20px;'>Los horarios pueden cambiar, pero la cosa irá más o menos así:</b><br><br><b style='color:#034949;'>VIERNES 10 OCTUBRE (pre-boda)</b><br>El Cortijo Balzain es como un pueblo andaluz en miniatura, y queremos invitarte a que disfrutes de unas auténticas fiestas de pueblo desde el primer día. Habrá <b>música, cerveza y otras bebidas, y comida por un tubo</b>.<br><br><b>Inicio de las fiestas:</b> 19h.<br><b>Karaoke:</b> 21h. / <b>Cierre:</b> 24h.<br><br><b style='color:#034949;'>SÁBADO 11 OCTUBRE (boda)</b><br><b>Boda:</b> 12:30-14h.<br><b>Cóctel:</b> 14-15:30h.<br><b>Comida/convite:</b> 15:30-18h.<br><b>Barra libre y DJ:</b> 18-22h.<br><b>Rave:</b> 22-24h.<br><br><img src='https://lodemanuylaura.com/djj.gif'><br><br><b style='color:#034949;'>DOMINGO 12 OCTUBRE (post-boda)</b><br>Cortijada desde las 13h.<br>Comida dominguera (estupenda para la resaca) de despedida!</p><br><img src='https://lodemanuylaura.com/post.gif'>",
+                "cuatro": "<h2>Info de interés</h2><p><b>¿Qué me pongo?</b><br>Lilo llevará smoking el día de la ceremonia, tú puedes llevar lo que quieras, especialmente en la pre y post.<br><br><b>Soy vegetariano, alergias, etc.</b><br>¡Sin problema! Avísanos y te contamos.<br><br><b>Toco la flauta dulce con la nariz, ¿puedo hacer una exhibición en la pre-boda?</b><br>Hay que darle una vuelta a esa idea, pero ¡aceptamos propuestas! Escríbenos ❤<br><br><img src='https://lodemanuylaura.com/dog.gif'><br><br><b>Estamos pensando juntar el hambre con las ganas de comer e irnos unos días antes a Granada...</b>¡Genial! Avísanos y apúntate estos sitios para tapear: Los Pipos (pescaito), Ávila (jamón asado), Om-Kalsum (tapas marroquís y veg), La Sitarilla (tapas clásicas).</p>"
+            };
+
+            // Mostrar contenido debajo de los iconos
+            contentDiv.innerHTML = contentHTML[option];
+            contentDiv.style.display = "block";
+        }
+    </script>
+</body>
