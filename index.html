@@ -1,0 +1,195 @@
+<head>
+    <meta charset="UTF-8">
+    <meta property="og:title" content="Boda Manu & Laura 2025" />
+    <meta property="og:image" content="https://lodemanuylaura.com/socials.png" />
+    <meta property="og:url" content="https://lodemanuylaura.com" />
+    <meta property="og:type" content="website" />
+
+    <audio id="background-music" loop>
+        <source src="https://lodemanuylaura.com/song.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        let musicPlayed = false; // Variable para verificar si la música se ha reproducido
+
+        function playMusic() {
+            var audio = document.getElementById("background-music");
+
+            if (!musicPlayed) {
+                // Reproducir la música
+                audio.play().catch(error => {
+                    console.log("Error al reproducir la música:", error);
+                });
+
+                musicPlayed = true; // Marcar que la música ya fue reproducida
+            } else {
+                // Detener la música
+                audio.pause();
+                audio.currentTime = 0; // Reiniciar la música al principio
+                musicPlayed = false; // Marcar que la música ha sido detenida
+            }
+        }
+    </script>
+    
+    
+    <style>
+
+        body {
+            max-width: 100%;
+            background: #069a99;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            flex-direction: column;
+            margin-right: 5%;
+            margin-left: 5%;
+            text-align: center;
+            color: white;
+            font-family: Verdana,Geneva,sans-serif; 
+        }
+
+        /* Animación de shake */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+
+        /* Animación de fade-out */
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        #image {
+            width: 100%;
+            max-width: 1000px;
+            transition: opacity 1.5s;
+        }
+
+        #content {
+            display: none;
+            text-align: center;
+            font-size: 40px;
+        }
+
+        /* Contenedor de iconos */
+        .icon-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            margin-top: 20px;
+        }
+
+        /* Iconos pequeños */
+        .icon img {
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .icon img:hover {
+            opacity: 0.7;
+        }
+
+        /* Contenedor de contenido */
+        .content-box {
+            display: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 18px;
+            width: 80%;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="image" src="https://lodemanuylaura.com/home.png">
+    
+    <!-- Iconos ocultos inicialmente -->
+    <div id="icons" class="icon-container" style="display:none;">
+        <div class="icon"><img src="https://lodemanuylaura.com/icon1.png" onclick="showContent('uno')"></div>
+        <div class="icon"><img src="https://lodemanuylaura.com/icon3.png" onclick="showContent('tres')"></div>
+        <div class="icon"><img src="https://lodemanuylaura.com/icon4.png" onclick="showContent('cuatro')"></div>
+    </div>
+
+    <!-- Contenido dinámico -->
+    <div id="content" class="content-box"></div>
+
+    <br><br><img width="220" id="actionButton" onclick="playMusic()" src="https://lodemanuylaura.com/music.gif"><p style="font-size:25px;margin-top:0px;"><b style="color:black;">PLAY MUSIC!</b><br>
+
+    <script>
+        const images = [
+            "https://lodemanuylaura.com/home.png",
+            "https://lodemanuylaura.com/lilo1.png",
+            "https://lodemanuylaura.com/lilo2.png",
+            "https://lodemanuylaura.com/lilo3.png"
+        ];
+
+        const extraImage = "https://lodemanuylaura.com/volver.png"; 
+        const transitionImages = [
+            "https://lodemanuylaura.com/lilo4.png",
+            "https://lodemanuylaura.com/loading.gif"
+        ]; 
+
+        let index = 0;
+        const imgElement = document.getElementById("image");
+        const contentDiv = document.getElementById("content");
+        const iconContainer = document.getElementById("icons");
+
+        imgElement.addEventListener("click", (event) => {
+            if (imgElement.src.includes(extraImage)) {
+                imgElement.src = images[3]; // Volver a lilo3
+                return;
+            }
+
+            if (index < 3) {
+                index++;
+                imgElement.src = images[index]; // Avanza a la siguiente imagen
+            } else {
+                // En lilo3, decidir según la posición del clic
+                const x = event.clientX;
+                const width = imgElement.clientWidth;
+
+                if (x < width / 1.7) {
+                    showTransitionImages(); // Izquierda
+                } else {
+                    imgElement.src = extraImage; // Derecha
+                }
+            }
+        });
+
+        function showTransitionImages() {
+            imgElement.src = transitionImages[0]; 
+            imgElement.style.animation = "shake 1.5s";
+
+            setTimeout(() => {
+                imgElement.src = transitionImages[1]; 
+                imgElement.style.animation = "";
+
+                setTimeout(() => {
+                    imgElement.style.display = "none";
+                    iconContainer.style.display = "flex"; // Muestra los iconos
+                }, 2000);
+            }, 2000);
+        }
+
+        function showContent(option) {
+            // Contenido HTML para cada icono
+            const contentHTML = {
+                "uno": "<h1>Cuándo y dónde</h1><p><img width='350' src='https://lodemanuylaura.com/welcome.gif'><br><br><b>Boda:</b> sábado 11 octubre 2025<br><br><b>Lugar:</b> Cortijo Balzain (La Zubia, Granada)<br><br><a href='https://maps.app.goo.gl/G1GSBHKHi3QXVY7B9' target='_blank'>Abrir en Google Maps</a><br><br><span style='font-size:25px;'>se tarda unos 25 minutos en coche o taxi (mejor!) desde el centro de Granada</span><br><br><img width='600' src='https://lodemanuylaura.com/balzain.png'></p>",
+                "tres": "<h1>Programa de fiestas</h1><p>Los horarios exactos pueden cambiar, pero la cosa irá más o menos así:</b><br><br><b style='color:#034949;'>SÁBADO 11 OCTUBRE<br>(boda)</b><br><br><b>Boda:</b> 12:00h.<br><b>Cóctel:</b> 14-15:30h.<br><b>Comida/convite:</b> 15:30-18h.<br><b>Barra libre y DJ:</b> 18-22h.<br><b>Rave:</b> 22-24h.<br><br><img width='200' src='https://lodemanuylaura.com/djj.gif'><img width='200' src='https://lodemanuylaura.com/post.gif'><br><br>",
+                "cuatro": "<h1>Info de interés</h1><p><b>Aydiomio, ¿qué me pongo?</b><br>Lilo llevará smoking el día de la ceremonia, tú puedes llevar lo que quieras.<br><br><b>Soy vegetariano, alergias, etc.</b><br>¡Sin problema! Avísanos y te contamos.<br><br><b>¿Sobre o transferencia?</b><br>Lo que más coraje te dé. La cuenta es ES65 0182 2903 9002 0169 0545 a cualquiera de nuestros nombres.</p>"
+            };
+
+            // Mostrar contenido debajo de los iconos
+            contentDiv.innerHTML = contentHTML[option];
+            contentDiv.style.display = "block";
+        }
+    </script>
+</body>
